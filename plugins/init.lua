@@ -14,5 +14,8 @@ return {
   --   end
   -- }
   -- ["vim-autoformat/vim-autoformat"] = {},
-  ['sbdchd/neoformat'] = {}
+  ['sbdchd/neoformat'] = {},
+  ['tpope/vim-surround'] = {},
+  ['voldikss/vim-translator'] = {},
+  ['ggandor/leap.nvim'] = {},
 }
