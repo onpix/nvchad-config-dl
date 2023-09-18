@@ -190,6 +190,15 @@ lvim.plugins = {
     "tpope/vim-surround",
   },
   {
+    "github/copilot.vim",
+		config = function()
+			-- copilot assume mapped
+			vim.g.copilot_assume_mapped = true
+			vim.g.copilot_no_tab_map = true
+      vim.api.nvim_set_keymap("i", "<C-l>", 'copilot#Accept("<CR>")', { silent = true, expr = true, script = true })
+		end,
+  },
+  {
     "ggandor/leap.nvim",
     config = function()
       require('leap').add_default_mappings()
@@ -202,10 +211,46 @@ lvim.plugins = {
     end,
   },
   {
+    "AndrewRadev/switch.vim",
+    config = function()
+      -- require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    config = function()
+      require("todo-comments").setup({
+        keywords = {
+          FIX = {
+            icon = " ", -- icon used for the sign, and in search results
+            color = "error", -- can be a hex color, or a named color (see below)
+            alt = {"fix", "fixme", "fixit", "issue" }, -- a set of other keywords that all map to this FIX keywords
+            -- signs = false, -- configure signs for some keywords individually
+          },
+          TODO = { icon = " ", color = "info", alt= {"todo" }},
+          HACK = { icon = " ", color = "warning", alt={"hack"} },
+          WARN = { icon = " ", color = "warning", alt = { "warn" } },
+          PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+          NOTE = { icon = " ", color = "hint", alt = { "note" } },
+          TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+        },
+      })
+    end,
+  },
+  -- {
+  --   "AckslD/nvim-neoclip.lua",
+  --   config = function()
+  --     require("neoclip").setup()
+  --   end,
+  -- },
+  {
     "sbdchd/neoformat",
   },
   {
     'junegunn/vim-easy-align',
+  },
+  {
+    'mbbill/undotree',
   },
   -- {
   --   "nvim-lualine/lualine.nvim",
@@ -227,9 +272,13 @@ lvim.keys.normal_mode["<Leader>x"] = ":BufferKill<CR>"
 lvim.keys.normal_mode["<Leader>n"] = ":Neoformat<CR>"
 lvim.keys.normal_mode["<Leader>e"] = ":NvimTreeToggle<CR>"
 lvim.keys.normal_mode["<Tab>"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["-"] = ":Switch<CR>"
 lvim.keys.normal_mode["<S-Tab>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<Leader>u"] = ":UndotreeToggle<CR>"
+-- lvim.keys.normal_mode["<Leader>p"] = ":Telescope neoclip<CR>"
 lvim.keys.normal_mode["j"] = "gj"
 lvim.keys.normal_mode["k"] = "gk" -- allow moving inside a wrapped long line
+lvim.keys.normal_mode["<C-p>"] = ":wa | !bash upload.sh<CR>"
 lvim.keys.insert_mode["jk"] = "<ESC>"
 -- lvim.keys.command_mode["jk"] = "<ESC>"
 lvim.keys.visual_mode["ga"] = ":EasyAlign" -- allow moving inside a wrapped long line
@@ -241,10 +290,14 @@ lvim.keys.visual_mode["ga"] = ":EasyAlign" -- allow moving inside a wrapped long
 -- require("lvim.lsp.manager").setup("pylsp", opts)
 
 -- Config the neoformat
-vim.g.neoformat_python_autopep8 = {
-  ['exe'] = 'autopep8'
-}
-vim.g.neoformat_enabled_python = { 'autopep8' }
+-- vim.g.neoformat_python_autopep8 = {
+--   ['exe'] = 'autopep8'
+-- }
+-- vim.g.neoformat_enabled_python = { 'autopep8' }
+-- vim.g.neoformat_python_black = {
+--   ['exe'] = 'black'
+-- }
+vim.g.neoformat_enabled_python = { 'black' }
 
 -- Config lualine
 --
@@ -264,3 +317,11 @@ lvim.builtin.lualine.on_config_done = function(lualine)
   }
   -- lualine.setup(config)
 end
+
+-- add abbreviation config
+vim.cmd [[
+  abbreviate pdb import ipdb; ipdb.set_trace()
+]]
+
+-- unset the sys clipboard
+-- vim.opt.clipboard = "autoselect"
